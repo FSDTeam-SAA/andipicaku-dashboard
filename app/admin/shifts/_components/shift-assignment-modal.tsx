@@ -184,26 +184,6 @@ export function ShiftAssignmentModal({
               )}
             </div>
           </div>
-
-          {/* Selected Employee Display */}
-          <div>
-            <label className="text-sm font-medium text-gray-300 mb-2 block">Employee</label>
-            <div className="px-3 py-2 bg-slate-800 rounded border border-white/10 text-white">
-              {selectedEmployee ? (
-                <div className="flex items-center space-x-3">
-                  <div className="h-8 w-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-sm">
-                    {selectedEmployee.name ? selectedEmployee.name.charAt(0).toUpperCase() : selectedEmployee.email.charAt(0).toUpperCase()}
-                  </div>
-                  <span>{selectedEmployee.name || selectedEmployee.email}</span>
-                </div>
-              ) : employeesLoading ? (
-                "Loading employee..."
-              ) : (
-                "Employee not found"
-              )}
-            </div>
-          </div>
-
           <div>
             <label className="text-sm font-medium text-gray-300 mb-2 block">Location</label>
             <Select 
