@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   type ColumnDef,
@@ -10,25 +10,18 @@ import {
   type SortingState,
   getFilteredRowModel,
   type ColumnFiltersState,
-} from "@tanstack/react-table";
-import { useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+} from "@tanstack/react-table"
+import { useState } from "react"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { ChevronLeft, ChevronRight, Search } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  searchKey?: string;
-  searchPlaceholder?: string;
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+  searchKey?: string
+  searchPlaceholder?: string
 }
 
 export function DataTable<TData, TValue>({
@@ -37,8 +30,8 @@ export function DataTable<TData, TValue>({
   searchKey,
   searchPlaceholder = "Search...",
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
   const table = useReactTable({
     data,
@@ -53,7 +46,7 @@ export function DataTable<TData, TValue>({
       sorting,
       columnFilters,
     },
-  });
+  })
 
   return (
     <div className="space-y-4">
@@ -62,12 +55,8 @@ export function DataTable<TData, TValue>({
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <Input
             placeholder={searchPlaceholder}
-            value={
-              (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event) =>
-              table.getColumn(searchKey)?.setFilterValue(event.target.value)
-            }
+            value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
+            onChange={(event) => table.getColumn(searchKey)?.setFilterValue(event.target.value)}
             className="pl-10 bg-[#030E15] border-white/10 text-white placeholder:text-gray-400"
           />
         </div>
@@ -77,21 +66,10 @@ export function DataTable<TData, TValue>({
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
-                key={headerGroup.id}
-                className="border-white/10 hover:bg-slate-700/50"
-              >
+              <TableRow key={headerGroup.id} className="border-white/10 hover:bg-slate-700/50">
                 {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    className="text-gray-300 font-semibold"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                  <TableHead key={header.id} className="text-gray-300 font-semibold">
+                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
               </TableRow>
@@ -106,21 +84,13 @@ export function DataTable<TData, TValue>({
                   className="border-white/10 hover:bg-slate-700/50 text-white"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
+                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center text-gray-400"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center text-gray-400">
                   No results.
                 </TableCell>
               </TableRow>
@@ -131,17 +101,9 @@ export function DataTable<TData, TValue>({
 
       <div className="flex items-center justify-between">
         <div className="text-sm text-gray-400">
-          Visualizzazione da{" "}
-          {table.getState().pagination.pageIndex *
-            table.getState().pagination.pageSize +
-            1}{" "}
-          a{" "}
-          {Math.min(
-            (table.getState().pagination.pageIndex + 1) *
-              table.getState().pagination.pageSize,
-            data.length
-          )}{" "}
-          di {data.length} risultati
+          Visualizzazione da {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} a{" "}
+          {Math.min((table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize, data.length)} di{" "}
+          {data.length} risultati
         </div>
         <div className="flex items-center space-x-2">
           <Button
@@ -157,11 +119,7 @@ export function DataTable<TData, TValue>({
             {Array.from({ length: table.getPageCount() }, (_, i) => (
               <Button
                 key={i}
-                variant={
-                  table.getState().pagination.pageIndex === i
-                    ? "default"
-                    : "outline"
-                }
+                variant={table.getState().pagination.pageIndex === i ? "default" : "outline"}
                 size="sm"
                 onClick={() => table.setPageIndex(i)}
                 className={
@@ -186,5 +144,5 @@ export function DataTable<TData, TValue>({
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AddLocationModal } from "@/components/modals/add-location-modal";
+import { DeleteLocationModal } from "@/components/modals/DeleteLocationModal";
 import { locationApi } from "@/lib/api";
 import { Plus, Edit, Trash2 } from "lucide-react";
 
@@ -30,6 +31,8 @@ interface Location {
 
 export default function LocationsPage() {
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
 
   const { data: locationsData, isLoading } = useQuery({
     queryKey: ["locations"],
@@ -53,19 +56,13 @@ export default function LocationsPage() {
         const shifts = row.original.shifts;
         return (
           <div className="flex flex-wrap gap-2">
-            {shifts.map((shift) => (
-              <div key={shift._id} className="flex space-x-2">
-                <Badge className="bg-blue-600 text-white">
-                  {shift.title} {shift.startTime.slice(0, 5)}-
-                  {shift.endTime.slice(0, 5)}
-                </Badge>
-                <Badge className="bg-amber-600 text-white">
-                  {shift.title} {shift.startTime.slice(0, 5)}-
-                  {shift.endTime.slice(0, 5)}
-                </Badge>
-              </div>
-            ))}
-          </div>
+  {shifts.map((shift) => (
+    <Badge key={shift._id} className="bg-blue-600 text-white">
+      {shift.title} {shift?.startTime?.slice(0, 5) || 'N/A'}-
+      {shift?.endTime?.slice(0, 5) || 'N/A'}
+    </Badge>
+  ))}
+</div>
         );
       },
     },
@@ -106,12 +103,16 @@ export default function LocationsPage() {
     {
       id: "actions",
       header: "Azioni",
-      cell: () => (
+      cell: ({ row }) => (
         <div className="flex space-x-2">
           <Button
             variant="ghost"
             size="sm"
             className="text-blue-400 hover:text-blue-300 hover:bg-slate-700"
+            onClick={() => {
+              setSelectedLocation(row.original);
+              setAddModalOpen(true);
+            }}
           >
             <Edit className="h-4 w-4" />
           </Button>
@@ -119,6 +120,10 @@ export default function LocationsPage() {
             variant="ghost"
             size="sm"
             className="text-red-400 hover:text-red-300 hover:bg-slate-700"
+            onClick={() => {
+              setSelectedLocation(row.original);
+              setDeleteModalOpen(true);
+            }}
           >
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -154,11 +159,14 @@ export default function LocationsPage() {
           <p className="text-gray-300">Dashboard &gt; Locale</p>
         </div>
         <Button
-          onClick={() => setAddModalOpen(true)}
+          onClick={() => {
+            setSelectedLocation(null);
+            setAddModalOpen(true);
+          }}
           className="bg-[#901450] hover:bg-pink-700 text-white"
         >
           <Plus className="h-4 w-4 mr-2" />
-          Aggiungere Locale
+          Aggiungi Locale
         </Button>
       </div>
 
@@ -169,7 +177,16 @@ export default function LocationsPage() {
         searchPlaceholder="Cerca locale"
       />
 
-      <AddLocationModal open={addModalOpen} onOpenChange={setAddModalOpen} />
+      <AddLocationModal
+        open={addModalOpen}
+        onOpenChange={setAddModalOpen}
+        location={selectedLocation}
+      />
+      <DeleteLocationModal
+        open={deleteModalOpen}
+        onOpenChange={setDeleteModalOpen}
+        location={selectedLocation}
+      />
     </div>
   );
 }

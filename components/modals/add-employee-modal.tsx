@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { employeeApi } from "@/lib/api";
-import { X } from "lucide-react";
 
 interface AddEmployeeModalProps {
   open: boolean;
@@ -68,17 +67,6 @@ export function AddEmployeeModal({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="name" className="text-gray-300">
-              Nome
-            </Label>
-            <Input
-              id="name"
-              placeholder="Inserisci il nome del gestore"
-              className="bg-[#030E15] border-white/10 text-white placeholder:text-gray-400"
-              disabled
-            />
-          </div>
 
           <div className="space-y-2">
             <Label htmlFor="email" className="text-gray-300">
@@ -94,31 +82,6 @@ export function AddEmployeeModal({
               }
               className="bg-[#030E15] border-white/10 text-white placeholder:text-gray-400"
               required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="phone" className="text-gray-300">
-              Telefono
-            </Label>
-            <Input
-              id="phone"
-              placeholder="Inserisci il numero di telefono"
-              className="bg-[#030E15] border-white/10 text-white placeholder:text-gray-400"
-              disabled
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="password" className="text-gray-300">
-              Password
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Inserisci la password del gestore"
-              className="bg-[#030E15] border-white/10 text-white placeholder:text-gray-400"
-              disabled
             />
           </div>
 

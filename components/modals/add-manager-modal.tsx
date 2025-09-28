@@ -1,8 +1,6 @@
 "use client";
 
-import type React from "react";
-
-import { useState } from "react";
+import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -15,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { managerApi } from "@/lib/api";
-import { X } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 
 interface AddManagerModalProps {
   open: boolean;
@@ -23,6 +21,7 @@ interface AddManagerModalProps {
 }
 
 export function AddManagerModal({ open, onOpenChange }: AddManagerModalProps) {
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -32,6 +31,10 @@ export function AddManagerModal({ open, onOpenChange }: AddManagerModalProps) {
     role: "manager",
     address: "",
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const queryClient = useQueryClient();
 
@@ -133,17 +136,30 @@ export function AddManagerModal({ open, onOpenChange }: AddManagerModalProps) {
             <Label htmlFor="password" className="text-gray-300">
               Password
             </Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Inserisci la password del gestore"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-              className="bg-[#030E15] border-white/10 text-white placeholder:text-gray-400"
-              required
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Inserisci la password del gestore"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                className="bg-[#030E15] border-white/10 text-white placeholder:text-gray-400 pr-10"
+                required
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-200"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
+            </div>
           </div>
 
           <Button
